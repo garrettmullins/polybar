@@ -15,10 +15,8 @@ POLYBAR_NS
 namespace modules {
   template class module<memory_module>;
 
-  mmemory_module::memory_module(const bar_settings& bar, string name_, const config& config)
-    : timer_module<memory_module>(bar, move(name_), config) {set_interval(1s);
-    m_perc_memused_warn = m_conf.get(name(), "warn-percentage", 90);
-}
+  memory_module::memory_module(const bar_settings& bar, string name_) : timer_module<memory_module>(bar, move(name_)) {
+    m_interval = m_conf.get<decltype(m_interval)>(name(), "interval", 1s);
 
     m_formatter->add(DEFAULT_FORMAT, TAG_LABEL, {TAG_LABEL, TAG_BAR_USED, TAG_BAR_FREE, TAG_RAMP_USED, TAG_RAMP_FREE,
                                                  TAG_BAR_SWAP_USED, TAG_BAR_SWAP_FREE, TAG_RAMP_SWAP_USED, TAG_RAMP_SWAP_FREE});
@@ -97,8 +95,6 @@ namespace modules {
     m_perc_swap_free = math_util::percentage(kb_swap_free, kb_swap_total);
     m_perc_swap_used = 100 - m_perc_swap_free;
 
-    
-    bool memory_module::update() {
     // replace tokens
     if (m_label) {
       m_label->reset_tokens();
