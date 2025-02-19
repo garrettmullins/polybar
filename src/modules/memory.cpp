@@ -95,6 +95,8 @@ namespace modules {
     m_perc_swap_free = math_util::percentage(kb_swap_free, kb_swap_total);
     m_perc_swap_used = 100 - m_perc_swap_free;
 
+    
+    bool memory_module::update() {
     // replace tokens
     if (m_label) {
       m_label->reset_tokens();
